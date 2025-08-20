@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>야구 시뮬레이션</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        h1{
+            margin-bottom: 10px;
+        }
+        #instructions {
+            max-width: 600px;
+            margin: 10px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+            font-size: 16px;
+            line-height: 1.5;
+            text-align: left;
+        }
+        #scoreboard {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 50%;
+        }
+        #scoreboard th, #scoreboard td {
+            border: 1px solid #222;
+            padding: 8px;
+        }
+        #info, #situation, #result {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>야구 시뮬레이션 게임</h1>
+    <div id="instructions">
+        <strong>게임 플레이 방법:</strong>
+        <ul>
+            <li><b>게임 시작</b> 버튼을 누르면 9이닝 야구 경기가 시작됩니다.</li>
+            <li><b>투구!</b> 버튼을 누르면 투수가 공을 던지고 결과가 결정됩니다.</li>
+            <li>판정은 스트라이크, 볼, 안타, 홈런, 아웃 등 실제 야구 규칙을 모사합니다.</li>
+            <li>3 아웃되면 공격과 수비가 교대하고, 이닝이 진행됩니다.</li>
+            <li>모든 9이닝이 끝나면 최종 승패가 표시됩니다.</li>
+            <li>주자 이동과 점수도 자동으로 계산되며, 점수판에 업데이트됩니다.</li>
+        </ul>
+        <p>투수와 타자의 능력치에 따라 경기 결과가 달라집니다.</p>
+    </div>
+    <div id="info">게임 시작 전입니다.</div>
+    <div id="situation"></div>
+    <button id="startButton">게임 시작</button>
+    <button id="pitchButton" disabled>투구!</button>
+    <table id="scoreboard">
+        <thead>
+            <tr><th>이닝</th><th>내 점수</th><th>상대 점수</th></tr>
+        </thead>
+        <tbody id="scoreBody"></tbody>
+        <tfoot>
+            <tr>
+                <th>총합</th>
+                <th id="myTotalScore">0</th>
+                <th id="aiTotalScore">0</th>
+            </tr>
+        </tfoot>
+    </table>
+    <script>
+        (() => {
+            const maxInnings = 9;
+            let myScores = Array(maxInnings).fill(0);
+            let aiScores = Array(maxInnings).fill(0);
+            let currentInning = 0;
+            let half = 'top';
+            let outs = 0;
+            let strikes = 0;
+            let balls = 0;
+            let bases = [false, false, false];
+
+            const myBatter = {contact: 70, power: 60, discipline: 65};
+            const myPitcher = {control: 65, speed: 70};
+            const aiBatter = {contact: 65, power: 65, discipline: 70};
+            const aiPitcher = {control: 70, speed: 65};
+
+            let offenseBatter, defensePitcher;
+
+            const infoDiv = document.getElementById('info');
+            const situationDiv = document.getElementById('situation');
+            const startButton = document.getElementById('startButton');
+            const pitchButton = document.getElementById('pitchButton');
+            const scoreBody = document.getElementById('scoreBody');
+            const myTotalScoreE1 = document.getElementById('myTotalScore');
+            const aiTotalScoreE1 = document.getElementById('aiTotalScore');
+
+            function renderScoreboard() {
+                scoreBody.innerHTML = '';
+                for(let i=0; i<maxInnings; i++) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${i+1}</td><td>${myScores[i]}</td><td>${aiScores[i]}</td>`;
+                    scoreBody.appendChild(tr);
+                }
+                myTotalScoreE1.textContent = myScores.reduce((a,b)=>a+b,0);
+                aiTotalScoreE1.textContent = aiScores.reduce((a,b)=>a+b,0);
+            }
+
+            function updateSituation() {
+                let baseStr = bases.map((b,i) => b ? (i+1)+'루' : '').filter(Boolean).join(', ');
+                if(!baseStr) baseStr = '주자 없음';
+                situationDiv.textContent = `이닝 ${currentInning+1} ${half === 'top' ? '상' : '하'} | 아웃: ${outs} | 스트라이크: ${strikes} | 볼: ${balls} | ${baseStr}`;
+            }
+
+            function resetHalfInning() {
+                outs = strikes = balls = 0;
+                bases = [false,false,false];
+                updateSituation();
+                pitchButton.disabled = false;
+            }
+
+            function setScore(run) {
+                if(run === 0) return;
+                if(halt === 'top') {
+                    myScores[currentInning] += run;
+                } else {
+                    aiScores[currentInning] += run;
+                }
+                renderScoreboard();
+                infoDiv.textContent += ` +${run}점! `;
+            }
+
+            function advanceRunners(hit) {
+                // hit: 1단타, 2 2루타, 3 3루타, 4 홈런, 0 아웃
+                let runScored = 0;
+                // 3루 주자부터 이동
+                for(let i=2; i>=0; i--) {
+                    if(bases[i]) {
+                        let newBase = i + hit;
+                        if(newBase >= 3) {
+                            runScored++;
+                            bases[i] = false;
+                        } else {
+                            bases[newBase] = true;
+                            bases[i] = false;
+                        }
+                    }
+                }
+                // 타자도 진루 (히트별로)
+                if(hit === 4) {
+                    runScored++; // 홈런 타자도 득점
+                } else if(hit>0) {
+                    bases[hit-1] = true;
+                }
+                setScore(runScored);
+            }
+
+            function changeHalfInning() {
+                pitchButton.disabled = true;
+                outs = strikes = balls = 0;
+                bases = [false,false,false];
+                updateSituation();
+
+                if(half === 'top') {
+                    half = 'bottom';
+                    offenseBatter = aiBatter;
+                    defensePitcher = myPitcher;
+                    infoDiv.textContent = '하루 상대 공격!';
+                } else {
+                    half = 'top';
+                    currentInning++;
+                    if(currentInning >= maxInnings) {
+                        finishGame();
+                        return;
+                    }
+                    offenseBatter = myBatter;
+                    defensePitcher = aiPitcher;
+                    infoDiv.textContent = `${currentInning+1} 이닝 시작!`;
+                }
+                resetHalfInning();
+            }
+
+            function finishGame() {
+                pitchButton.disabled = true;
+                startButton.disabled = true;
+                let myTotal = myScores.reduce((a,b)=>a+b,0);
+                let aiTotal = aiScores.reduce((a,b)=>a+b,0);
+                let result = myTotal > aiTotal ? '승리!' : (myTotal < aiTotal ? '패배...' : '무승부!');
+                infoDiv.textContent = `게임 종료! 최종 결과: 내 점수 ${myTotal} : ${aiTotal} 상대 - ${result}`;
+                situationDiv.textContent = '';
+            }
+
+            function pitch() {
+                if(pitchButton.disabled) return;
+
+                // 확률 계산을 위한 가중치들 (0~1)
+                // 스트라이크 확률 = 투수 control - 타자 discipline + 기본값
+                // 볼 확률 = 타자 discipline - 투수 control + 기본값
+                // 타격 성공 확률 = 타자 contact & power 조합 - 투수 speed
+                let control = defensePitcher.control/100;
+                let discipline = offenseBatter.discipline/100;
+                let contact = offenseBatter.contact/100;
+                let power = offenseBatter.power/100;
+                let speed = defensePitcher.speed/100;
+
+                // 기본 확률 블럭
+                let baseStrikeProb = 0.45 + (control - discipline)*0.2;
+                let baseBallProb = 0.2 + (discipline - control)*0.25;
+                let baseHitProb = 0.35 + (contact*0.5 + power*0.3);
+
+                // 타입: 스트라이크, 볼, 타구 중 하나 결정
+                let rand = Math.random();
+
+                if(rand < baseStrikeProb) {
+                    // 스트라이크 판정
+                    strikes++;
+                    if(strikes >= 3) {
+                        outs++;
+                        strikes = balls = 0;
+                        infoDiv.textContent = "삼진 아웃!";
+                        if(outs >=3){
+                            changeHalfInning();
+                            return;
+                        }
+                    } else {
+                        infoDiv.textContent = "스트라이크!";
+                    }
+                } else if(rand < baseStrikeProb + baseBallProb) {
+                    // 볼 판정
+                    balls++;
+                    if(balls >= 4) {
+                        infoDiv.textContent = "볼넷 - 1루 진루";
+                        advanceRunners(1); // 볼넷은 1루타처럼 처리
+                        strikes = balls = 0;
+                    } else {
+                        infoDiv.textContent = "볼!";
+                    }
+                } else {
+                    // 타격 판정(아웃, 단타, 2루타, 3루타, 홈런)
+                    strikes = balls = 0;
+
+                    // 타구 판정 확률 분배 (대략값)
+                    // 아웃 65%, 단타 20%, 2루 7%, 3루 4%, 홈런 4%
+                    let hitRand = Math.random();
+                    if(hitRand < 0.65) {
+                        // 아웃
+                        outs++;
+                        infoDiv.textContent = "타구: 아웃!";
+                        if(outs >= 3) {
+                            changeHalfInning();
+                            return;
+                        }
+                    } else if(hitRand < 0.85) {
+                        // 단타
+                        advanceRunners(1);
+                        infoDiv.textContent = "타구: 단타!";
+                    } else if(hitRand < 0.92) {
+                        advanceRunners(2);
+                        infoDiv.textContent = "타구: 2루타!";
+                    } else if(hitRand < 0.96) {
+                        advanceRunners(3);
+                        infoDiv.textContent = "타구: 3루타!";
+                    } else {
+                        advanceRunners(4);
+                        infoDiv.textContent = "타구: 홈런!!!";
+                    }
+                }
+                updateSituation();
+            }
+
+            // 최초 셋업
+            function startGame() {
+                currentInning = 0;
+                half = 'top';
+                outs = strikes = balls = 0;
+                bases = [false,false,false];
+                myScores.fill(0);
+                aiScores.fill(0);
+                offenseBatter = myBatter;
+                defensePitcher = aiPitcher;
+                startButton.disabled = true;
+                pitchButton.disabled = false;
+                renderScoreboard();
+                infoDiv.textContent = "게임 시작! 1 이닝 상 공격부터 시작!";
+                updateSituation();
+            }
+
+            startButton.addEventListener('click', startGame);
+            pitchButton.addEventListener('click', pitch);
+        })();
+    </script>
+</body>
+</html>
