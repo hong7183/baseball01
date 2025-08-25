@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이적시장</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-navy: #001f4f;
+            --color-green: #00b06a;
+            --color-gray: #eee;
+        }
+        body {
+            margin: 0;
+            background: url('images/야구장2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #222;
+        }
+        header {
+            background: var(--color-navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        #logo img {
+            height: 50px;
+        }
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--color-green);
+            color: #fff;
+        }
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            color: var(--color-green);
+            margin: 60px 0 10px 0;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+        .news-section {
+            background: rgba(255, 255, 255, 0.8);
+            margin: 20px auto;
+            max-width: 800px;
+            border-radius: 18px;
+            padding: 30px 22px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        .news-section h2 {
+            color: var(--color-navy);
+            font-size: 1.3em;
+        }
+        .player-card-list {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 18px;
+        }
+        .player-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 08);
+            padding: 16px;
+            width: 165px;
+            text-align: center;
+        }
+        .player-card img {
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 7px;
+        }
+        .player-card strong {
+            font-size: 1.05em;
+            color: var(--color-navy);
+        }
+        .login-btn {
+            background: var(--color-green);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 17px;
+            font-weight: bold;
+            margin-left: 25px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-btn:hover {
+            background: #03875c;
+        }
+        @media (max-width: 640px) {
+            header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+            }
+            .news-section {
+                padding: 18px 6px;
+            }
+            .player-card-list {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .main-title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <a href="baseball_main_test.html">
+                <img src="images/generated-image-Photoroom.png" alt="로고">
+            </a>
+        </div>
+        <nav>
+            <a href="players.html">선수</a>
+            <a href="teams.html">팀별 현황</a>
+            <a href="market.html">이적시장 뉴스</a>
+            <a href="analysis.html">통계분석</a>
+            <a href="community.html">커뮤니티</a>
+            <button class="login-btn" onclick="location.href='carcustom_login.html'">로그인</button>
+        </nav>
+    </header>
+    <h1 class="main-title">이적시장 분석</h1>
+    <section class="news-section">
+        <h2>🔥 실시간 이적 뉴스</h2>
+        <ul>
+            <li>홍길동, 두산에서 LG로 FA 계약 완료 - 2025.08.21</li>
+            <li>박철수, SSG 잔류 - 3년 24억 재계약</li>
+            <li>최태수, NC에서 키움으로 트레이드 성사</li>
+        </ul>
+    </section>
+    <section class="news-section">
+        <h2>주요 FA/트레이드 선수</h2>
+        <div class="player-card-list">
+            <div class="player-card">
+                <img src="images/player1.jpg" alt="선수A 사진">
+                <strong>선수A</strong>
+                <div>포지션: 투수<br>이전 팀: 삼성<br>새 팀: 롯데</div>
+            </div>
+            <div class="player-card">
+                <img src="images/player2.jpg" alt="선수B 사진">
+                <strong>선수B</strong>
+                <div>포지션: 내야수<br>이전 팀: LG<br>새 팀: 한화</div>
+            </div>
+            <div class="player-card">
+                <img src="images/player3.jpg" alt="선수C 사진">
+                <strong>선수C</strong>
+                <div>포지션: 외야수<br>이전 팀: KT<br>새 팀: 두산</div>
+            </div>
+        </div>
+    </section>
+    <footer style="text-align:center; padding: 24px 0; color: #888;">
+        © 2025 baseball 이적시장 | 모든 정보는 공식 발표 기준입니다.
+    </footer>
+</body>
+</html>
