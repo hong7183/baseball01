@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-navy: #001f4f;
+            --color-green: #00b06a;
+            --color-gray: #eee;
+        }
+        body {
+            margin: 0;
+            background: url('images/야구장2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #222;
+        }
+        header {
+            background: var(--color-navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        #logo img {
+            height: 50px;
+        }
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--color-green);
+            color: #fff;
+        }
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            color: var(--color-green);
+            margin: 60px 0 10px 0;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.85);
+            margin: 20px auto;
+            max-width: 900px;
+            border-radius: 16px;
+            padding: 28px 22px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        .section h2 {
+            color: var(--color-navy);
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        table th, table td {
+            padding: 12px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+        table th {
+            background: var(--color-gray);
+        }
+        .write-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background: var(--color-green);
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .write-btn:hover {
+            background: #03875c;
+        }
+        .hot-posts ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .hot-posts li {
+            margin: 6px 0;
+            padding: 6px 0;
+            border-bottom: 1px dashed #bbb;
+        }
+        footer {
+            text-align: center;
+            padding: 24px 0;
+            color: #888;
+        }
+        @media (max-width: 640px) {
+            header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+            }
+            table th, table td {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+            .main-title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <a href="baseball_main_test.html">
+                <img src="images/generated-image-Photoroom.png" alt="로고">
+            </a>
+        </div>
+        <nav>
+            <a href="players.html">선수</a>
+            <a href="teams.html">팀별 현황</a>
+            <a href="market.html">이적시장 뉴스</a>
+            <a href="analysis.html">통계분석</a>
+            <a href="baseball_community_test.html">커뮤니티</a>
+            <button class="login-btn" onclick="location.href='carcustom_login.html'">로그인</button>
+        </nav>
+    </header>
+    <h1 class="main-title">⚾ 팬 커뮤니티</h1>
+    <!-- 게시판 섹션 -->
+     <section class="section">
+        <h2>📢 최신 글</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>날짜</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>5</td>
+                    <td><a href="#">[질문] 새 이적 관련 의견</a></td>
+                    <td>야구매니아</td>
+                    <td>2025-08-24</td>
+                    <td>102</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><a href="#">올 시즌 LG 우승 가능성></a></td>
+                    <td>LG팬</td>
+                    <td>2025-08-23</td>
+                    <td>215</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><a href="#">두산 시인 투수 평가</a></td>
+                    <td>두산사람</td>
+                    <td>2025-08-22</td>
+                    <td>145</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="#" class="write-btn">✍ 글쓰기</a>
+     </section>
+     <!-- 인기글 섹션 -->
+      <section class="section hot-posts">
+        <h2>🔥 인기 게시글</h2>
+        <ul>
+            <li>"최태수 트레이드 대박임?" - 두산팬 의견</li>
+            <li>"LG 타선 보강, 올 시즌 기대!"</li>
+            <li>"한화, 젊은 선수 육성 전략 토론"</li>
+        </ul>
+      </section>
+      <footer>
+        © 2025 baseball 커뮤니티 | 팬들의 자유로운 공간
+      </footer>
+</body>
+</html>
