@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선수</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-navy: #001f4f;
+            --color-green: #00b06a;
+            --color-gray: #eee;
+        }
+        body {
+            margin: 0;
+            background: url(images/야구장2.jpg) no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #222;
+        }
+        header {
+            background: var(--color-navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        #logo img {
+            height: 50px;
+        }
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--color-green);
+            color: #fff;
+        }
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            color: var(--color-green);
+            margin: 60px 0 20px 0;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+        .search-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 26px;
+        }
+        .search-wrap input, .search-wrap select {
+            padding: 9px 14px;
+            font-size: 1.06em;
+            border: 1.5px solid var(--color-navy);
+            border-radius: 7px;
+        }
+        .search-wrap input {
+            width: 250px;
+            max-width: 85vw;
+        }
+        .player-list {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .player-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+            padding: 16px;
+            width: 180px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .player-card img {
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 7px;
+        }
+        .player-card strong {
+            font-size: 1.09em;
+            color: var(--color-navy);
+        }
+        .not-found {
+            text-align: center;
+            margin: 40px 0 0 0;
+            font-size: 1.25em;
+            color: var(--color-navy);
+            font-weight: bold;
+        }
+        .login-btn {
+            background: var(--color-green);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 17px;
+            font-weight: bold;
+            margin-left: 25px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-btn:hover {
+            background: #03875c;
+        }
+        @media (max-width: 640px) {
+            header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+            }
+            .main-title {
+                font-size: 2em;
+            }
+            .player-card {
+                width: 95vw;
+            }
+            .search-wrap {
+                flex-direction: column;
+                align-items: center;
+            }
+            .search-wrap input, .search-wrap select {
+                width: 95vw;
+            }
+        }
+        footer {
+            text-align: center;
+            padding: 24px 0;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <a href="baseball_main_test.html">
+                <img src="images/generated-image-Photoroom.png" alt="로고">
+            </a>
+        </div>
+        <nav>
+            <a href="players.html" style="background: var(--color-green);color:#fff;">선수</a>
+            <a href="teams.html">팀 순위</a>
+            <a href="highlight.html">하이라이트</a>
+            <a href="baseball_chart_test.html">이적시장 뉴스</a>
+            <a href="analysis.html">통계분석</a>
+            <a href="baseball_community_test.html">커뮤니티</a>
+            <button class="login-btn" onclick="location.href='carcustom_login.html'">로그인</button>
+        </nav>
+    </header>
+    <h1 class="main-title">선수 목록</h1>
+    <!-- 검색창 + 구단 선택 추가 -->
+     <div class="search-wrap">
+        <input type="text" id="searchBar" placeholder="선수 이름으로 검색...">
+        <select id="teamFilter">
+            <option value="">전체 구단</option>
+            <option value="두산">두산</option>
+            <option value="LG">LG</option>
+            <option value="한화">한화</option>
+            <option value="KT">KT</option>
+            <!-- 필요하면 더 추가 -->
+        </select>
+     </div>
+     <div class="player-list" id="playerList"></div>
+     <div id="notFound" class="not-found" style="display: none;">검색 결과가 없습니다.</div>
+     <footer>
+        © 2025 baseball 선수 정보 | 모든 정보는 공식 발표 기준입니다.
+     </footer>
+     <script>
+        const players = [
+            { name: '홍길동', position: '투수', team: '두산', img: 'images/player1.jpg', era: '2.95', win: '12', lose: '5'},
+            { name: '박철수', position: '내야수', team: 'LG', img: 'images/player2.jpg', avg: '.322', hr: '18', rbi: '72' },
+            { name: '최태수', position: '외야수', team: '한화', img: 'images/player3.jpg', avg: '.288', hr: '9', rbi: '41' },
+            { name: '김철민', position: '포수', team: 'KT', img: 'images/player4.jpg', avg: '.251', hr: '2', rbi: '33' },
+        ];
+        function renderPlayers(list) {
+            const $list = document.getElementById('playerList');
+            $list.innerHTML = '';
+            if(!list.length) {
+                document.getElementById('notFound').style.display = 'block';
+                return;
+            }
+            document.getElementById('notFound').style.display = 'none';
+            list.forEach(player => {
+                let infoHtml = '';
+                if(player.position === '투수') {
+                    infoHtml = `승:${player.win} 패:${player.lose}<br>ERA:${player.era}`;
+                } else {
+                    infoHtml = `타율:${player.avg} 홈런:${player.hr}<br>타점:${player.rbi}`;
+                }
+                $list.innerHTML += `
+                    <div class="player-card">
+                        <img src="${player.img}" alt="${player.name} 사진">
+                        <strong>${player.name}</strong>
+                        <div>${player.position} | ${player.team}</div>
+                        <div>${infoHtml}</div>
+                    </div>
+                `;
+            });
+        }
+
+
+        // 검색 & 필터 기능
+        function applyFilter() {
+            const keyword = document.getElementById('searchBar').value.trim().toLowerCase();
+            const selectedTeam = document.getElementById('teamFilter').value;
+
+            const filtered = players.filter(p => {
+                const matchName = p.name.toLowerCase().includes(keyword);
+                const matchTeam = selectedTeam === "" || p.team === selectedTeam;
+                return matchName && matchTeam;
+            });  
+            renderPlayers(filtered);
+        }
+
+        // 이벤트 바인딩
+        document.getElementById('searchBar').addEventListener('iniput', applyFilter);
+        document.getElementById('teamFilter').addEventListener('change', applyFilter);
+
+        // 첫 화면 전체 선수 표시
+        renderPlayers(players);
+     </script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>팀 순위</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-navy: #001f4f;
+      --color-green: #00b06a;
+      --color-gray: #eee;
+    }
+    body {
+      margin: 0;
+      background: url('images/야구장2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #222;
+    }
+    header {
+      background: var(--color-navy);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 40px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    #logo img {
+      height: 50px;
+    }
+    nav {
+      display: flex;
+      gap: 40px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 14px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    nav a:hover {
+      background: var(--color-green);
+      color: #fff;
+    }
+    .main-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3em;
+      color: var(--color-green);
+      margin: 60px 0 20px 0;
+      text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
+      text-align: center;
+    }
+    .ranking-section {
+      background: rgba(255, 255, 255, 0.85);
+      margin: 20px auto;
+      max-width: 900px;
+      border-radius: 18px;
+      padding: 30px 22px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table thead {
+      background: var(--color-navy);
+      color: #fff;
+    }
+    table th, table td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+    }
+    table tbody tr:hover {
+      background: #f9f9f9;
+    }
+    .hightlight {
+      font-weight: bold;
+      color: var(--color-green);
+    }
+    .login-btn {
+      background: var(--color-green);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 17px;
+      font-weight: bold;
+      margin-left: 25px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .login-btn:hover {
+      background: #03875c;
+    }
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+      }
+      .ranking-section {
+        padding: 18px 6px;
+      }
+      table th, table td {
+        padding: 8px;
+        font-size: 0.9em;
+      }
+      .main-title {
+        font-size: 2em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div id="logo">
+      <a href="baseball_main_test.html">
+        <img src="images/generated-image-Photoroom.png" alt="로고">
+      </a>
+    </div>
+    <nav>
+      <a href="players.html">선수</a>
+      <a href="teams.html" style="background: var(--color-green);color:#fff;">팀 순위</a>
+      <a href="highlight.html">하이라이트</a>
+      <a href="baseball_chart_test.html">이적시장 뉴스</a>
+      <a href="analysis.html">통계분석</a>
+      <a href="baseball_community_test.html">커뮤니티</a>
+      <button class="login-btn" onclick="location.href='carcustom_login.html'">로그인</button>
+    </nav>
+  </header>
+  <h1 class="main-title">팀 순위</h1>
+  <section class="ranking-section">
+    <table>
+      <thead>
+        <tr>
+          <th>순위</th>
+          <th>팀</th>
+          <th>승</th>
+          <th>패</th>
+          <th>무</th>
+          <th>승률</th>
+          <th>게임차</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="hightlight">1</td>
+          <td><strong>두산</strong></td>
+          <td>72</td>
+          <td>38</td>
+          <td>4</td>
+          <td>0.655</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td class="hightlight">2</td>
+          <td><strong>LG</strong></td>
+          <td>70</td>
+          <td>41</td>
+          <td>3</td>
+          <td>0.630</td>
+          <td>2.5</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>SSG</strong></td>
+          <td>65</td>
+          <td>46</td>
+          <td>2</td>
+          <td>0.586</td>
+          <td>7.5</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>한화</strong></td>
+          <td>60</td>
+          <td>50</td>
+          <td>3</td>
+          <td>0.545</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>KT</strong></td>
+          <td>58</td>
+          <td>52</td>
+          <td>3</td>
+          <td>0.527</td>
+          <td>14</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>NC</strong></td>
+          <td>55</td>
+          <td>57</td>
+          <td>2</td>
+          <td>0.491</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>롯데</strong></td>
+          <td>50</td>
+          <td>62</td>
+          <td>2</td>
+          <td>0.446</td>
+          <td>23</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>키움</strong></td>
+          <td>47</td>
+          <td>66</td>
+          <td>1</td>
+          <td>0.416</td>
+          <td>26.5</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><strong>KIA</strong></td>
+          <td>45</td>
+          <td>69</td>
+          <td>0</td>
+          <td>0.395</td>
+          <td>29</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><strong>삼성</strong></td>
+          <td>40</td>
+          <td>74</td>
+          <td>0</td>
+          <td>0.351</td>
+          <td>34</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <footer style="text-align: center; padding: 24px 0; color: #888;">
+    © 2025 baseball 팀순위 | 모든 정보는 KBO 기준입니다.
+  </footer>
+</body>
+</html>

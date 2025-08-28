@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>하이라이트 영상</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-navy: #001f4f;
+            --color-green: #00b06a;
+            --color-gray: #eee;
+        }
+        body {
+            margin: 0;
+            background: url('images/야구장2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #222;
+        }
+        header {
+            background: var(--color-navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        #logo img {
+            height: 50px;
+        }
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--color-green);
+            color: #fff;
+        }
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            color: var(--color-green);
+            margin: 60px 0 20px 0;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+        .highlight-section {
+            background: rgba(255, 255, 255, 0.85);
+            margin: 24px auto 40px auto;
+            max-width: 900px;
+            border-radius: 18px;
+            padding: 34px 22px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        .highlight-category h2 {
+            color: var(--color-navy);
+            border-bottom: 1.5px solid var(--color-green);
+            padding-bottom: 7px;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+        .videos-list {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+        .highlight-video {
+            flex: 1 1 290px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 8px;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+        .highlight-video iframe {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 8px;
+        }
+        .highlight-video span {
+            font-weight: bold;
+            color: var(--color-navy);
+            display: block;
+        }
+        .login-btn {
+            background: var(--color-green);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 17px;
+            font-weight: bold;
+            margin-left: 28px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-btn:hover {
+            background: #03875c;
+        }
+        @media (max-width: 700px) {
+            .main-title {
+                font-size: 2em;
+            }
+            .highlight-section {
+                padding: 18px 6px;
+            }
+            .videos-list {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <a href="baseball_main_test.html">
+                <img src="images/generated-image-Photoroom.png" alt="로고">
+            </a>
+        </div>
+        <nav>
+            <a href="players.html">선수</a>
+            <a href="teams.html">팀 순위</a>
+            <a href="highlight.html" style="background: var(--color-green);color:#fff;">하이라이트</a>
+            <a href="baseball_chart_test.html">이적시장 뉴스</a>
+            <a href="analysis.html">통계분석</a>
+            <a href="baseball_community_test.html">커뮤니티</a>
+            <button class="login-btn" onclick="location.href='carcustom_login.html'">로그인</button>
+        </nav>
+    </header>
+    <h1 class="main-title">하이라이트 영상</h1>
+    <section class="highlight-section">
+        <div class="highlight-category">
+            <h2>두산 베어스</h2>
+            <div class="videos-list">
+                <div class="highlight-video">
+                    <iframe src="https://www.youtube.com/embed/gyR7y55xNoE" allowfullscreen></iframe>
+                    <span>[두산 VS 롯데] 2025 신한 SOL뱅크 KBO 리그</span>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-category">
+            <h2>박민우 (NC 다이노스)</h2>
+            <div class="videos-list">
+                <div class="highlight-video">
+                    <iframe src="https://www.youtube.com/embed/b5cIUGWrcj0" allowfullscreen></iframe>
+                    <span>[키움히어로즈 VS NC다이노스] 박민우 하이라이트</span>
+                </div>
+            </div>
+        </div>
+        <!-- 새 영상 쉽게 추가/수정 -->
+        <!--
+        <div class="highlight-category">
+            <h2>LG 트윈스</h2>
+            <div class="videos-list">
+                <div class="highlight-video">
+                    <ifame src="유튜브_EMBED_주소" allowfullscreen></iframe>
+                    <span>영상 설명</span>
+                </div>
+            </div>
+        </div>
+        -->
+    </section>
+    <footer style="text-align: center; padding: 24px 0; color: #888;">
+        © 2025 baseball 하이라이트 | 모든 영상은 공식 유튜브 링크 기준입니다.
+    </footer>
+</body>
+</html>

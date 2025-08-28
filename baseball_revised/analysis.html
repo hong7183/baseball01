@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이적시장 통계분석</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --color-navy: #001f4f;
+      --color-green: #00b06a;
+    }
+    body {
+      margin: 0;
+      background: url('images/야구장2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #222;
+    }
+    header {
+      background: var(--color-navy);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 40px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    #logo img { height: 50px; }
+    nav { display: flex; gap: 40px; }
+    nav a {
+      color: #fff; text-decoration: none; font-weight: bold;
+      padding: 8px 14px; border-radius: 4px; transition: background 0.2s;
+    }
+    nav a:hover { background: var(--color-green); color: #fff; }
+    .login-btn {
+      background: var(--color-green); color: #fff; border: none;
+      border-radius: 6px; padding: 7px 17px; font-weight: bold;
+      margin-left: 25px; cursor: pointer; transition: background 0.2s;
+    }
+    .login-btn:hover { background: #03875c; }
+    .main-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3em;
+      color: var(--color-green);
+      margin: 60px 0 10px 0;
+      text-shadow: 1px 1px 8px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+    .news-section {
+      background: rgba(255,255,255,0.88);
+      margin: 20px auto;
+      max-width: 880px;
+      border-radius: 18px;
+      padding: 30px 22px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    }
+    .news-section h2 {
+      color: var(--color-navy); font-size: 1.3em;
+      margin-bottom: 10px;
+      border-left: 7px solid var(--color-green);
+      padding-left: 12px;
+    }
+    .player-card-list { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
+    .player-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 16px;
+      width: 165px;
+      text-align: center;
+    }
+    .player-card img {
+      width: 85px; height: 85px; object-fit: cover;
+      border-radius: 50%; margin-bottom: 7px;
+    }
+    .player-card strong { font-size: 1.05em; color: var(--color-navy); }
+    /* 통계분석 스타일 추가 */
+    .analysis-section {
+      margin: 32px auto 0 auto;
+      max-width: 880px;
+      background: rgba(255,255,255,0.92);
+      border-radius: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+      padding: 32px 22px 34px 22px;
+    }
+    .analysis-charts-row {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+    .chart-box {
+      flex: 1; min-width: 290px;
+      background: #eef6f3;
+      border-radius: 13px;
+      padding: 28px 22px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .chart-title {
+      font-size: 1.06em; color: #111; margin-bottom: 9px; font-weight: 500;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      margin-bottom: 10px;
+      background: #fff;
+    }
+    th, td {
+      border: 1px solid #b6d3cf;
+      padding: 10px 8px;
+      text-align: center;
+    }
+    th {
+      background: var(--color-green);
+      color: #fff; font-weight: bold;
+    }
+    tr:hover { background: #f9fcff; }
+    .summary-row {
+      background: #e4ffef;
+      color: #11856e;
+      font-weight: bold;
+    }
+    @media (max-width: 700px) {
+      .analysis-charts-row {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+    footer {
+      text-align:center; padding: 24px 0; color: #888;
+      background: rgba(255,255,255,0.7); margin-top: 35px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div id="logo">
+      <a href="baseball_main_test.html">
+        <img src="images/generated-image-Photoroom.png" alt="로고">
+      </a>
+    </div>
+    <nav>
+      <a href="players.html">선수</a>
+      <a href="teams.html">팀 순위</a>
+      <a href="highlight.html">하이라이트</a>
+      <a href="baseball_chart_test.html">이적시장 뉴스</a>
+      <a href="analysis.html" style="background: var(--color-green);color:#fff;">통계분석</a>
+      <a href="baseball_community_test.html">커뮤니티</a>
+      <button class="login-btn" onclick="location.href='carcustom_login.html'">로그인</button>
+    </nav>
+  </header>
+  <h1 class="main-title">이적시장 통계분석</h1>
+  <section class="news-section">
+    <h2>📈 2025 이적 통계 주요 지표</h2>
+    <div style="color:#333; line-height:1.7; font-size:1.05em;">
+      이적시장 변화와 선수 영입/방출 현황을 시각적으로 한눈에 파악할 수 있습니다.<br>
+      포지션별·팀별 이적 현황, 전체 이적료 흐름 분석 등 다양한 인사이트를 제공합니다.
+    </div>
+  </section>
+  <!-- 통계/차트 분석 -->
+  <section class="analysis-section">
+    <div class="analysis-charts-row">
+      <div class="chart-box">
+        <div class="chart-title">포지션별 이적 선수</div>
+        <canvas id="positionChart" height="180"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">팀별 이적료 합계</div>
+        <canvas id="feeChart" height="180"></canvas>
+      </div>
+    </div>
+    <div style="font-weight:600; font-size:1.09em; margin-top:16px; color:#045;">
+      전체 이적 내역
+    </div>
+    <table id="playersTable">
+      <thead>
+        <tr>
+          <th>이름</th><th>포지션</th><th>이전 팀</th><th>이적팀</th><th>이적료</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 선수 정보 출력 -->
+      </tbody>
+      <tfoot>
+        <tr class="summary-row">
+          <td colspan="4">총 이적료</td>
+          <td id="totalFee"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+  <footer>
+    © 2025 baseball 이적시장 | 모든 정보는 공식 발표 기준입니다.
+  </footer>
+  <script>
+    // 선수 데이터
+    const PLAYERS = [
+      { name:"홍길동", pos:"투수", team:"LG", transfer:"SK", fee:1000000000 },
+      { name:"박철수", pos:"타자", team:"KT", transfer:"롯데", fee:850000000 },
+      { name:"최하늘", pos:"포수", team:"두산", transfer:"한화", fee:720000000 },
+      { name:"김영희", pos:"내야수", team:"롯데", transfer:"두산", fee:650000000 },
+      { name:"이현수", pos:"외야수", team:"삼성", transfer:"NC", fee:570000000 },
+      { name:"정성훈", pos:"투수", team:"한화", transfer:"LG", fee:400000000 }
+    ];
+
+    function renderTable(data) {
+      const tbody = document.querySelector("#playersTable tbody");
+      const totalFee = data.reduce((sum, p) => sum + p.fee, 0);
+      document.getElementById("totalFee").textContent = "₩"+totalFee.toLocaleString();
+      tbody.innerHTML = "";
+      data.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${p.name}</td>
+          <td>${p.pos}</td>
+          <td>${p.team}</td>
+          <td>${p.transfer}</td>
+          <td>₩${p.fee.toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    function renderPositionChart(playersData) {
+      const counts = {};
+      playersData.forEach(p => { counts[p.pos] = (counts[p.pos]||0)+1; });
+      const labels = Object.keys(counts);
+      const data = Object.values(counts);
+      if(window.positionChart) window.positionChart.destroy();
+      window.positionChart = new Chart(document.getElementById('positionChart'), {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label:'포지션별 이적 선수',
+            data: data,
+            backgroundColor: '#00b06a'
+          }]
+        },
+        options: {
+          plugins: { legend: { display: false }},
+          scales: { y: { beginAtZero:true, ticks:{ stepSize:1, precision:0 } } }
+        }
+      });
+    }
+    function renderFeeChart(playersData) {
+      const feeMap = {};
+      playersData.forEach(p => {
+        feeMap[p.transfer] = (feeMap[p.transfer]||0) + p.fee;
+      });
+      const labels = Object.keys(feeMap);
+      const data = Object.values(feeMap);
+      if(window.feeChart) window.feeChart.destroy();
+      window.feeChart = new Chart(document.getElementById('feeChart'), {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            label:'팀별 이적료',
+            data: data,
+            backgroundColor: ['#41b896','#70e8b6','#00b06a','#0052e0','#ffb300','#e65757']
+          }]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    }
+    // 초기 렌더
+    renderTable(PLAYERS);
+    renderPositionChart(PLAYERS);
+    renderFeeChart(PLAYERS);
+  </script>
+</body>
+</html>

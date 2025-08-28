@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이적시장 분석</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --color-navy: #001f4f;
+            --color-green:#00b06a;
+            --color-gray: #eee;
+        }
+        body {
+            margin: 0;
+            background: url('images/야구장2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #222;
+        }
+        header {
+            background: var(--color-navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        #logo img {
+            height: 50px;
+        }
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--color-green);
+        }
+        .login-btn {
+            background: var(--color-green);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-btn:hover {
+            background: #03875c;
+        }
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            color: var(--color-green);
+            margin: 50px 0 20px;
+            text-align: center;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
+        }
+        .news-section {
+            background: rgba(255, 255, 255, 0.9);
+            margin: 22px auto;
+            max-width: 950px;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        }
+        .news-section h2 {
+            color: var(--color-navy);
+            font-size: 1.35em;
+            border-left: 6px solid var(--color-green);
+            padding-left: 10px;
+        }
+        .player-card-list {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 18px;
+        }
+        .player-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 16px;
+            width: 165px;
+            text-align: center;
+        }
+        .player-card img {
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 7px;
+        }
+        .player-card strong {
+            font-size: 1.05em;
+            color: var(--color-navy);
+        }
+        /* 차트/검색/테이블 영역 */
+        .transfer-section {
+            margin-top: 25px;
+        }
+        .serch-box {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+        .serch-box input {
+            padding: 7px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            width: 200px;
+            font-size: 0.95em;
+        }
+        canvas {
+            margin: 20px auto;
+            display: block;
+            max-width: 600px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background: var(--color-green);
+            color: #fff;
+        }
+        tr:hover {
+            background: #f5f5f5;
+        }
+        footer {
+            text-align: center;
+            padding: 24px 0;
+            color: #888;
+            background: rgba(255, 255, 255, 0.7);
+            margin-top: 30px;
+        }
+        @media (max-width: 640px) {
+            header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            .main-title {
+                font-size: 2em;
+            }
+            .player-card-list {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <a href="baseball_main_test.html"><img src="images/generated-image-Photoroom.png" alt="로고"></a>
+        </div>
+        <nav>
+            <a href="players.html">선수</a>
+            <a href="teams.html">팀 순위</a>
+            <a href="highlight.html">하이라이트</a>
+            <a href="baseball_chart_test.html"style="background: var(--color-green);color:#fff;">이적시장 뉴스</a>
+            <a href="analysis.html">통계분석</a>
+            <a href="baseball_community_test.html">커뮤니티</a>
+            <button class="login-btn" onclick="location.href='carcustom_login'">로그인</button>
+        </nav>
+    </header>
+    <h1 class="main-title">이적시장 분석</h1>
+    <!-- 뉴스 -->
+    <section class="news-section">
+        <h2>🔥 실시간 이적 뉴스</h2>
+        <ul>
+            <li>***, 두산에서 LG로 FA계약 완료 - 2025.08.21</li>
+            <li>@@@, SSG 잔류 - 3년 24억 재계약</li>
+            <li>###, NC에서 키움으로 트레이드 성사</li>
+        </ul>
+    </section>
+    <!-- 카드 목록 -->
+    <section class="news-section">
+        <h2>주요 FA/트레이드 선수</h2>
+        <div class="player-card-list">
+            <div class="player-card">
+                <img src="images/player1.jpg" alt="선수A">
+                <strong>선수A</strong>
+                <div>포지션: 투수<br>이전 팀: 삼성:<br>새 팀: 롯데</div>
+            </div>
+            <div class="player-card">
+                <img src="images/player2.jpg" alt="선수B">
+                <strong>선수B</strong>
+                <div>포지션: 내야수<br>이전 팀: LG<br>새 팀: 한화</div>
+            </div>
+            <div class="player-card">
+                <img src="images/player3.jpg" alt="선수C">
+                <strong>선수C</strong>
+                <div>포지션: 외야수<br>이전 팀: KT<br>새 팀: 두산</div>
+            </div>
+        </div>
+    </section>
+    <!-- 차트 + 검색 + 테이블 -->
+    <section class="news-section transfer-section">
+        <h2>선수 검색 & 이적 통계</h2>
+        <div class="serch-box">
+            <input type="text" id="playerSearch" placeholder="선수/팀 이름 검색..." onkeyup="filterPlayers()">
+        </div>
+        <canvas id="positionChart" height="160"></canvas>
+        <table id="playersTable">
+            <thead>
+                <tr>
+                    <th>이름</th><th>포지션</th><th>팀</th><th>이적팀</th><th>이적료</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <footer>
+        © 2025 Baseball 이적시장 | 모든 정보는 공식 발표 기준입니다.
+    </footer>
+    <script>
+        // 선수 데이터
+        const PLAYERS = [
+            { name:"홍길동", pos:"투수", team:"LG", transfer:"SK", fee:1000000000 },
+            { name:"박철수", pos:"타자", team:"KT", transfer:"롯데", fee:850000000 },
+            { name:"최하늘", pos:"포수", team:"두산", transfer:"한화", fee:720000000 },
+            { name:"김영희", pos:"내야수", team:"롯데", transfer:"두산", fee:650000000 },
+            { name:"이현수", pos:"외야수", team:"삼성", transfer:"NC", fee:570000000 },
+            { name:"정성훈", pos:"투수", team:"한화", transfer:"LG", fee:400000000 }
+        ];
+
+        // 테이블 생성
+        function renderTable(data) {
+            const tbody = document.querySelector("#playersTable tbody");
+            tbody.innerHTML = "";
+            data.forEach(p => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${p.name}</td>
+                    <td>${p.pos}</td>
+                    <td>${p.team}</td>
+                    <td>${p.transfer}</td>
+                    <td>₩${p.fee.toLocaleString()}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 차트
+        let chart;
+        function renderChart(playersData) {
+            const counts = {};
+            playersData.forEach(p => {
+                consts[p.pos] = (counts[p.pos]||0)+1;
+            });
+            const labels = Object.keys(counts);
+            const data = Object.values(counts);
+            if(chart) chart.destroy();
+            chart = new Chart(document.getElementById('positionChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        lable: '포지션별 이적 선수',
+                        data: data,
+                        backgroundColor: '#00b06a'
+                    }]
+                },
+                options: {
+                    Plugins: { legend: { display: false }},
+                    scales: { y: { beginAtZero:true, ticks:{ stepSize:1, precision:0 }}}
+                }
+            });
+        }
+
+        // 검색
+        function filterPlayers() {
+            const val = document.getElementById("playerSearch").value.toLowerCase();
+            const filtered = PLAYERS.filter(p =>
+                p.name.toLowerCase().includes(val) ||
+                p.team.toLowerCase().includes(val) ||
+                p.transfer.toLowerCase().includes(val) ||
+                p.pos.toLowerCase().includes(val)
+            );
+            renderTable(filtered);
+            renderChart(filtered);
+        }
+
+        // 초기 렌더
+        renderTable(PLAYERS);
+        renderChart(PLAYERS);
+    </script>
+</body>
+</html>
